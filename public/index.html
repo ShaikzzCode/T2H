@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <title>Text to Hand Writting</title> -->
+  <title>T2H</title>
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  <!-- fav icon -->
+  <link rel="icon" type="image/x-icon" href="./t2h.png">
+
+</head>
+ 
+<body>
+  <div id="splash-screen">
+    <div style="width: 200px; height: 200px;">
+
+      <svg xmlns="http://www.w3.org/2000/svg" height="200px" width="200px" viewBox="0 0 200 200" class="pencil">
+        <defs>
+          <clipPath id="pencil-eraser">
+            <rect height="30" width="30" ry="5" rx="5"></rect>
+          </clipPath>
+        </defs>
+        <circle transform="rotate(-113,100,100)" stroke-linecap="round" stroke-dashoffset="439.82"
+          stroke-dasharray="439.82 439.82" stroke-width="2" stroke="white" fill="none" r="70" class="pencil__stroke">
+        </circle>
+        <g transform="translate(100,100)" class="pencil__rotate">
+          <g fill="none">
+            <circle transform="rotate(-90)" stroke-dashoffset="402" stroke-dasharray="402.12 402.12" stroke-width="30"
+              stroke="hsl(223,90%,50%)" r="64" class="pencil__body1"></circle>
+            <circle transform="rotate(-90)" stroke-dashoffset="465" stroke-dasharray="464.96 464.96" stroke-width="10"
+              stroke="hsl(223,90%,60%)" r="74" class="pencil__body2"></circle>
+            <circle transform="rotate(-90)" stroke-dashoffset="339" stroke-dasharray="339.29 339.29" stroke-width="10"
+              stroke="hsl(223,90%,40%)" r="54" class="pencil__body3"></circle>
+          </g>
+          <g transform="rotate(-90) translate(49,0)" class="pencil__eraser">
+            <g class="pencil__eraser-skew">
+              <rect height="30" width="30" ry="5" rx="5" fill="hsl(223,90%,70%)"></rect>
+              <rect clip-path="url(#pencil-eraser)" height="30" width="5" fill="hsl(223,90%,60%)"></rect>
+              <rect height="20" width="30" fill="hsl(223,10%,90%)"></rect>
+              <rect height="20" width="15" fill="hsl(223,10%,70%)"></rect>
+              <rect height="20" width="5" fill="hsl(223,10%,80%)"></rect>
+              <rect height="2" width="30" y="6" fill="hsla(223,10%,10%,0.2)"></rect>
+              <rect height="2" width="30" y="13" fill="hsla(223,10%,10%,0.2)"></rect>
+            </g>
+          </g>
+          <g transform="rotate(-90) translate(49,-30)" class="pencil__point">
+            <polygon points="15 0,30 30,0 30" fill="hsl(33,90%,70%)"></polygon>
+            <polygon points="15 0,6 30,0 30" fill="hsl(33,90%,50%)"></polygon>
+            <polygon points="15 0,20 10,10 10" fill="white"></polygon>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <!-- <p id="loadingT">Loading...</p> -->
+
+      <div class="loader">
+        <span id="loadingT">Loading</span>
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </div>
+      <span id="developedby"> Developed by Shaik</span>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+    <div class="left">
+      <div id="just_paper_shadow">
+        <div class="a4page" id="a4pageid">
+          <p id="p_tag">
+
+            Note: It's important to add proper validation and security measures when allowing users to edit content on
+            your website.
+
+            Note: It's important to add proper validation and security measures when allowing users to edit content on
+            your website.
+
+            Note: It's important to add proper validation and security measures when allowing users to edit content on
+            your website.
+
+            Note: It's important to add proper validation and security measures when allowing users to edit content on
+            your website.
+
+            Note: It's important to add proper validation and security measures when allowing users to edit content on
+            your website.
+
+            Note: It's important to add proper validation and security measures when allowing users to edit content on
+            your website.
+
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="leftEditBox">
+        <label style="background: white; padding: 5%;">
+          <input type="checkbox" id="editable-switch">
+          <span style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Editable</span>
+        </label>
+
+        <div class="inkContainer">
+          <label style="background: white; padding: 5%;">
+            <span style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Ink</span>
+          </label>
+          <button id="blueInk" onclick="setFontColorBlue()"></button>
+          <button id="blackInk" onclick="setFontColorBlack()"></button>
+          <button id="redInk" onclick="setFontColorRed()"></button>
+        </div>
+        <label style="background: white; padding: 5%;">
+          <h3 id="fsTxt">Font Size : 20</h3>
+          <input type="range" min="12" max="100" value="20" id="font-size" />
+        </label>
+
+        <div class="marginDabba">
+          <h3 id="mtop">Top Margin Size : 5</h3>
+          <input type="range" min="5" max="80" value="5" id="mtopSlider" />
+          <h3 id="mleft">Left Margin Size : 5</h3>
+          <input type="range" min="5" max="40" value="5" id="mleftSlider" />
+          <h3 id="mright">Right Margin Size : 5</h3>
+          <input type="range" min="5" max="40" value="5" id="mrightSlider" />
+          <h3 id="mbotom">Bottom Margin Size : 5 </h3>
+          <input type="range" min="5" max="40" value="5" id="mbotomSlider" />
+        </div>
+      </div>
+
+      <div>
+        <div style="justify-content: center; align-items: center; display: flex;">
+
+          <div class="rightEditBox1">
+            <div class="toggle-button-cover">
+              <div class="button-cover">
+                <label id="boldme"><span style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Bold
+                    Text</span></label>
+                <div class="button r" id="button-1">
+                  <input type="checkbox" class="checkbox" id="checkboxB" />
+                  <div class="knobs"></div>
+                  <div class="layer"></div>
+                </div>
+              </div>
+            </div>
+            <div class="toggle-button-cover">
+              <div class="button-cover">
+                <label id="boldme"><span style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Text
+                    Shadow</span></label>
+                <div class="button r" id="button-1">
+                  <input type="checkbox" class="checkbox" id="checkboxS" />
+                  <div class="knobs"></div>
+                  <div class="layer"></div>
+                </div>
+              </div>
+            </div>
+            <label for="language"><span
+                style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Select Font Style
+                :</span></label>
+            <select name="language" id="language" onchange="check()">
+              <option style="background: var(--maincolor3);" id="ffoption" value="fizalfont" selected>Fizal Font
+              </option>
+              <option id="ffoption" value="indie_flower">Handwriting 2</option>
+              <option style="background: var(--maincolor3);" id="ffoption" value="font3">Handwriting 3</option>
+              <option id="ffoption" value="font4">Handwriting 4</option>
+              <option style="background: var(--maincolor3);" id="ffoption" value="font5">Handwriting 5</option>
+              <option id="ffoption" value="font6">Handwriting 6</option>
+              <option style="background: var(--maincolor3);" id="ffoption" value="font7">Handwriting 7</option>
+              <option id="ffoption" value="font8">Handwriting 8</option>
+              <option style="background: var(--maincolor3);" id="ffoption" value="font9">Handwriting 9</option>
+              <option id="ffoption" value="font10">Handwriting 10</option>
+            </select>
+          </div>
+
+          <div class="rightEditBox2">
+            <label style="padding: 5%;">
+              <span style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Download as Image</span>
+            </label>
+            <button id="saveBtn" onclick="saveAsImage()">Download</button>
+          </div>
+        </div>
+
+        <div style="justify-content: center; align-items: center; display: flex;">
+
+          <div class="rightEditBox4">
+
+            <div style="background: white; padding: 5%;">
+              <span style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Added Text Ink</span>
+
+            </div>
+            <div class="inkContainer2">
+              <button id="blueInk2" onclick="setFontColorBlue2()"></button>
+              <button id="blackInk2" onclick="setFontColorBlack2()"></button>
+              <button id="redInk2" onclick="setFontColorRed2()"></button>
+            </div>
+          </div>
+          <div class="rightEditBox3">
+            <label style="padding: 5%;">
+              <span style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Add More Text</span>
+
+            </label>
+            <button id="add-button">Add</button>
+
+
+            <div class="toggle-button-cover">
+              <div class="button-cover">
+                <label id="boldme">
+                  <span style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #000;">Bold Addedd
+                    Text</span>
+                </label>
+                <div class="button r" id="button-1">
+                  <input type="checkbox" class="checkbox" id="checkboxBD" />
+                  <div class="knobs"></div>
+                  <div class="layer"></div>
+                </div>
+              </div>
+            </div>
+            <h3>Font Size</h3>
+            <input type="range" min="12" max="100" value="16" id="dy-font-size" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-section">
+
+    <footer class="footer">
+      <ul class="social-icon">
+
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a></li>
+        <li class="social-icon__item"><a class="social-icon__link" href="#">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </a></li>
+
+      </ul>
+      <ul class="menu">
+        <li class="menu__item"><a class="menu__link" href="#"><span
+              style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #fff;">About</span></a></li>
+        <li class="menu__item"><a class="menu__link" href="#"><span
+              style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #fff;">Team</span></a></li>
+        <li class="menu__item"><a class="menu__link" href="contactPage.html"><span
+              style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #fff;">Contact</span></a></li>
+
+      </ul>
+      <p style="-webkit-text-stroke-width: 0.4px; -webkit-text-stroke-color: #fff; line-height: 250px">&copy;2023 Fizal
+        Ali Shaik | All Rights Reserved</p>
+    </footer>
+  </div>
+</body>
+<script type="text/javascript">
+
+  const switchEl = document.getElementById('editable-switch');
+  const paragraphEl = document.getElementById('p_tag');
+
+  const checkboxBD = document.getElementById("checkboxBD");
+
+  window.onload = function () {
+
+    var container = document.getElementById("a4pageid");
+    var addButton = document.getElementById("add-button");
+    var redColorButton = document.getElementById("redInk2");
+    var blueColorButton = document.getElementById("blueInk2");
+    var blackColorButton = document.getElementById("blackInk2");
+
+
+    setTimeout(function () {
+      document.getElementById("splash-screen").style.display = "none";
+      document.getElementById("container").style.display = "block";
+    }, 3000); // 3-second delay
+
+
+
+    var nextId = 1;
+    var recentlyDraggedElement = null;
+
+    addButton.onclick = function () {
+      var inputText = prompt("Enter text to add:");
+      if (inputText === null || inputText === "") {
+        return;
+      }
+
+
+      var newDiv = document.createElement("div");
+
+      // const slideerer = document.getElementById("dy-font-size");
+
+      // slideerer.addEventListener("input", function() {
+      //   document.getElementById("dynamic-text-" + nextId).style.fontSize = this.value + "px";
+      // });
+
+      // JavaScript code
+      const firstPara = document.getElementById("p_tag");
+
+      const firstParaStylessss = window.getComputedStyle(firstPara); // get computed styles of first paragraph
+      const fontsss = firstParaStylessss.getPropertyValue('font-family'); // get font family property value
+      const fontsizee = firstParaStylessss.getPropertyValue('font-size'); // get font family property value
+      const fontcolorrr = firstParaStylessss.getPropertyValue('color'); // get font family property value
+
+      newDiv.id = "dynamic-text-" + nextId;
+      newDiv.className = "dynamic-text";
+      newDiv.innerHTML = inputText;
+      newDiv.style.fontFamily = fontsss;
+      newDiv.style.fontSize = fontsizee;
+      newDiv.style.color = fontcolorrr;
+
+      container.appendChild(newDiv);
+
+      // Update font size of most recently dragged element using the slider
+      newDiv.addEventListener("mousedown", function () {
+
+        recentlyDraggedElement = newDiv;
+        document.getElementById("dy-font-size").value = parseInt(recentlyDraggedElement.style.fontSize); // Update slider value
+
+      });
+
+
+
+      // Make the most recently dragged element editable on double click
+      newDiv.addEventListener("dblclick", function () {
+        recentlyDraggedElement.contentEditable = true;
+      });
+
+      // Make the new dynamic text draggable
+      makeDraggable(newDiv);
+
+
+      nextId++;
+    };
+    var slideerer = document.getElementById("dy-font-size");
+    slideerer.oninput = function () {
+      if (recentlyDraggedElement) {
+        recentlyDraggedElement.style.fontSize = this.value + "px";
+      }
+    };
+
+    redColorButton.addEventListener("click", function () {
+      if (recentlyDraggedElement) {
+        recentlyDraggedElement.style.color = "red";
+        document.getElementById("blueInk2").style.border = "none";
+        document.getElementById("blackInk2").style.border = "none";
+        document.getElementById("redInk2").style.border = "thick solid #fff222";
+      }
+    });
+    blueColorButton.addEventListener("click", function () {
+      if (recentlyDraggedElement) {
+        recentlyDraggedElement.style.color = "#342467";
+        document.getElementById("redInk2").style.border = "none";
+        document.getElementById("blackInk2").style.border = "none";
+        document.getElementById("blueInk2").style.border = "thick solid #fff222";
+      }
+    });
+    blackColorButton.addEventListener("click", function () {
+      if (recentlyDraggedElement) {
+        recentlyDraggedElement.style.color = "#000000";
+        document.getElementById("blueInk2").style.border = "none";
+        document.getElementById("redInk2").style.border = "none";
+        document.getElementById("blackInk2").style.border = "thick solid #fff222";
+      }
+    });
+
+    // document.addEventListener("keydown", function(event) {
+    //   if (event.ctrlKey && event.key === "e" && recentlyDraggedElement) {
+    //     recentlyDraggedElement.contentEditable = true;
+    //     recentlyDraggedElement.focus();
+    //   }
+    // });
+    document.addEventListener("keydown", function (event) {
+      if (event.ctrlKey) {
+        ctrlPressed = true;
+      }
+
+      if (event.code === "Delete" && recentlyDraggedElement) {
+        recentlyDraggedElement.remove();
+        recentlyDraggedElement = null;
+      }
+    });
+
+    document.addEventListener("keyup", function (event) {
+      ctrlPressed = false;
+    });
+
+    document.addEventListener("dblclick", function (event) {
+      if (ctrlPressed && event.target === recentlyDraggedElement) {
+        recentlyDraggedElement.contentEditable = true;
+        recentlyDraggedElement.focus();
+      }
+    });
+
+
+    checkboxBD.addEventListener("change", function () {
+      if (this.checked) {
+        var clrNow = recentlyDraggedElement.style.color;
+        recentlyDraggedElement.style.webkitTextStroke = "0.4px " + clrNow;
+        recentlyDraggedElement.style.webkitFilter = "url(#text-stroke)";
+      } else {
+        var clrNow = recentlyDraggedElement.style.color;
+        recentlyDraggedElement.style.webkitTextStroke = "0px " + clrNow;
+        recentlyDraggedElement.style.webkitFilter = "url(#text-stroke)";
+      }
+    });
+
+
+    function makeDraggable(element) {
+      var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      element.onmousedown = dragMouseDown;
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        element.style.top = (element.offsetTop - pos2) + "px";
+        element.style.left = (element.offsetLeft - pos1) + "px";
+
+
+
+      }
+
+      function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+
+  };
+
+
+
+  paragraphEl.addEventListener('keydown', (event) => {
+    const maxTextLength = (editableP.offsetWidth - 20) * (editableP.offsetHeight - 20) / (editableP.offsetHeight / editableP.style.lineHeight); // Subtract the padding and borders
+    if (event.target.innerText.length >= maxTextLength && event.keyCode !== 8) {
+      // Prevent typing when maximum length is reached and the key pressed is not the backspace key
+      event.preventDefault();
+    }
+  });
+
+  switchEl.addEventListener('change', function () {
+    if (this.checked) {
+      paragraphEl.contentEditable = true;
+    } else {
+      paragraphEl.contentEditable = false;
+    }
+  });
+
+  // setting up the font family      
+  function check() {
+    var val = document.getElementById('language').value;
+    if (val == 'fizalfont') {
+      paragraphEl.style.fontFamily = "fizalfont";
+    }
+    else if (val == 'indie_flower') {
+      paragraphEl.style.fontFamily = "indie_flower";
+    }
+    else if (val == 'font3') {
+      paragraphEl.style.fontFamily = "font3";
+    }
+    else if (val == 'font4') {
+      paragraphEl.style.fontFamily = "font4";
+    }
+    else if (val == 'font5') {
+      paragraphEl.style.fontFamily = "font5";
+    }
+    else if (val == 'font6') {
+      paragraphEl.style.fontFamily = "font6";
+    }
+    else if (val == 'font7') {
+      paragraphEl.style.fontFamily = "font7";
+    }
+    else if (val == 'font8') {
+      paragraphEl.style.fontFamily = "font8";
+    }
+    else if (val == 'font9') {
+      paragraphEl.style.fontFamily = "font9";
+    }
+    else if (val == 'font10') {
+      paragraphEl.style.fontFamily = "font10";
+    }
+  }
+
+
+  //make every pasted text into plain text
+  paragraphEl.addEventListener('paste', function (e) {
+    e.preventDefault();
+    const text = e.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+  });
+
+  const checkbox = document.getElementById("checkboxB");
+  checkbox.addEventListener("change", function () {
+    if (this.checked) {
+      var clrNow = paragraphEl.style.color;
+      paragraphEl.style.webkitTextStroke = "0.4px " + clrNow;
+      paragraphEl.style.webkitFilter = "url(#text-stroke)";
+    } else {
+      var clrNow = paragraphEl.style.color;
+      paragraphEl.style.webkitTextStroke = "0px " + clrNow;
+      paragraphEl.style.webkitFilter = "url(#text-stroke)";
+    }
+  });
+
+
+
+  const checkboxS = document.getElementById("checkboxS");
+  checkboxS.addEventListener("change", function () {
+    if (this.checked) {
+      paragraphEl.style.textShadow = "0px 0px 2px rgba(0, 0, 0, 0.3)";
+    } else {
+      paragraphEl.style.textShadow = "0px 0px 0px rgba(0, 0, 0, 0.1)";
+    }
+  });
+
+  function setFontColorBlue() {
+    paragraphEl.style.color = "#342467";
+    document.getElementById("blueInk").style.border = "thick solid #fff222";
+    document.getElementById("blackInk").style.border = "none";
+    document.getElementById("redInk").style.border = "none";
+  }
+  function setFontColorBlack() {
+    paragraphEl.style.color = "#000000";
+    document.getElementById("blueInk").style.border = "none";
+    document.getElementById("blackInk").style.border = "thick solid #fff222";
+    document.getElementById("redInk").style.border = "none";
+  }
+  function setFontColorRed() {
+    paragraphEl.style.color = "red";
+    document.getElementById("blueInk").style.border = "none";
+    document.getElementById("blackInk").style.border = "none";
+    document.getElementById("redInk").style.border = "thick solid #fff222";
+  }
+
+
+
+
+  var slider = document.getElementById("font-size");
+  var letteSize = document.getElementById("p_tag");
+  slider.addEventListener("input", function () {
+    var size = slider.value;
+    // this sets the body's font size property, but you can set whatever you need to
+    // document.body.style.fontSize = size + "px";
+    document.getElementById("fsTxt").innerHTML = "Font Size : " + size;
+    letteSize.style.fontSize = size + "px";
+  });
+
+
+
+  //margin code
+
+  var slidert = document.getElementById("mtopSlider");
+  slidert.addEventListener("input", function () {
+    var size = slidert.value;
+    document.getElementById("mtop").innerHTML = "Top Margin Size : " + size;
+    paragraphEl.style.paddingTop = size + "%";
+  });
+
+  var sliderl = document.getElementById("mleftSlider");
+  sliderl.addEventListener("input", function () {
+    var size = sliderl.value;
+    document.getElementById("mleft").innerHTML = "Left Margin Size : " + size;
+    paragraphEl.style.paddingLeft = size + "%";
+  });
+
+  var sliderr = document.getElementById("mrightSlider");
+  sliderr.addEventListener("input", function () {
+    var size = sliderr.value;
+    document.getElementById("mright").innerHTML = "Right Margin Size : " + size;
+    paragraphEl.style.paddingRight = size + "%";
+  });
+
+  var sliderb = document.getElementById("mbotomSlider");
+  sliderb.addEventListener("input", function () {
+    var size = sliderb.value;
+    document.getElementById("mbotom").innerHTML = "Bottom Margin Size : " + size;
+    paragraphEl.style.paddingBottom = size + "%";
+  });
+
+  //margin code
+
+  document.addEventListener('keydown', function (event) {
+    // Check if Ctrl+S was pressed
+    if (event.ctrlKey && event.key === 's') {
+      event.preventDefault(); // Prevent the browser's default action of saving the page
+
+      // Show a dialog box with "hello world"
+      saveAsImage();
+    }
+  });
+
+
+  function saveAsImage() {
+    const wrapper = document.getElementById('a4pageid');
+    // Use html2canvas to convert the wrapper div into a canvas element
+    html2canvas(wrapper, { scale: 9.4 }).then(canvas => {
+      // Create a new image element and set its source to the canvas data URL
+      const image = new Image();
+      image.src = canvas.toDataURL();
+      // Create a download link for the image and click it to start the download
+      const link = document.createElement('a');
+      link.download = 't2H_paper.jpg';
+      link.href = image.src;
+      link.click();
+    });
+  }
+
+
+
+
+</script>
+
+</html>
